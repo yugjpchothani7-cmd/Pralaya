@@ -1,0 +1,43 @@
+{
+  "scenario_id": "CYC_KARUNA_2026",
+  "name": "Cyclone Karuna",
+  "basin": "NORTH_INDIAN_OCEAN",
+  "category": "Extremely Severe Cyclonic Storm (ESCS)",
+  "peak_wind_kmh": 165.0,
+  "min_central_pressure_hpa": 952.0,
+  "landfall_target": "Chhatrapur / Gopalpur, Odisha",
+  "timeline": [
+    {
+      "time_offset_hours": -48,
+      "center_lat": 16.20,
+      "center_lon": 88.50,
+      "pressure_hpa": 998.0,
+      "wind_speed_kmh": 65.0,
+      "status": "DEEP_DEPRESSION"
+    },
+    {
+      "time_offset_hours": -24,
+      "center_lat": 17.80,
+      "center_lon": 86.80,
+      "pressure_hpa": 982.0,
+      "wind_speed_kmh": 115.0,
+      "status": "VERY_SEVERE_CYCLONIC_STORM"
+    },
+    {
+      "time_offset_hours": 0,
+      "center_lat": 19.34,
+      "center_lon": 85.12,
+      "pressure_hpa": 952.0,
+      "wind_speed_kmh": 165.0,
+      "status": "EXTREMELY_SEVERE_CYCLONIC_STORM"
+    },
+    {
+      "time_offset_hours": 12,
+      "center_lat": 20.45,
+      "center_lon": 84.60,
+      "pressure_hpa": 988.0,
+      "wind_speed_kmh": 85.0,
+      "status": "CYCLONIC_STORM"
+    }
+  ]
+}

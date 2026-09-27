@@ -1,0 +1,1 @@
+"""PRALAYA Multilingual Alerts Package"""
