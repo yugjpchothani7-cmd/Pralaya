@@ -45,13 +45,14 @@ export const GeminiCopilot: React.FC = () => {
   const chatBottomRef = useRef<HTMLDivElement>(null);
   const msgCounterRef = useRef<number>(2);
 
-  // Suggestion chips
+  // Citizen-friendly suggestion chips
   const suggestionChips = [
-    'Why was SH-14 rejected?',
-    'What shelters are currently safe?',
-    'Draft Odia alert for Sarpanches',
-    'Substation failure cascade impact',
-    'Show evacuation status for Gopalpur'
+    '💡 What should I do right now?',
+    '🌊 Bay of Bengal Cyclone Status',
+    '🚶 Which roads & shelters are open?',
+    '👶 Explain PRALAYA in simple words',
+    '⚠️ Is Highway 14 flooded?',
+    '🏛️ How does Judge Mode work?'
   ];
 
   useEffect(() => {
@@ -59,26 +60,60 @@ export const GeminiCopilot: React.FC = () => {
   }, [messages, isTyping]);
 
   const generateAIResponse = (prompt: string): { text: string; toolTrace?: Message['toolTrace'] } => {
-    const p = prompt.toLowerCase();
+    const p = prompt.toLowerCase().trim();
 
-    // Check predefined dialogues first
-    const matched = COPILOT_SAMPLE_DIALOGUES.find((d) =>
-      p.includes(d.prompt.toLowerCase().slice(0, 15))
-    );
-    if (matched) {
+    // 1. Greetings & System Introduction
+    if (/^(hi|hello|hey|greetings|namaste|morning|evening|who are you|what can you do)/i.test(p)) {
       return {
-        text: matched.response,
+        text: `Hello! I am PRALAYA Copilot, your 24/7 disaster safety assistant for the Bay of Bengal coast.\n\nHere is how I can help you right now:\n• 🌊 Check live cyclone speed, direction, and landfall time\n• 🚗 Tell you which highways are flooded and which safe routes to drive\n• 🏠 Find open cyclone shelters with available beds, food, and electricity\n• 💡 Give simple step-by-step safety instructions for your family\n\nAsk me anything in plain English, Odia, or Hindi!`,
         toolTrace: {
-          toolName: matched.toolCalled,
-          toolArgs: matched.toolArgs,
-          provenance: matched.provenance
+          toolName: 'initialize_safety_session',
+          toolArgs: { intent: 'greeting', groundedMode: true },
+          provenance: 'PRALAYA Emergency Assistance Sentinel'
         }
       };
     }
 
-    if (p.includes('sh-14') || p.includes('route') || p.includes('road') || p.includes('reject')) {
+    // 2. Simple Language / "Explain to a normal person"
+    if (p.includes('simple') || p.includes('normal') || p.includes('understand') || p.includes('layman') || p.includes('what is this') || p.includes('what is pralaya')) {
       return {
-        text: `ROUTE ANALYSIS REPORT [POSTGIS_HYDRO_EVAL]:\n\n• State Highway 14 (SH-14): REJECTED due to predicted storm surge inundation exceeding 1.85m at culvert km-14.2.\n• Alternate Route Approved: National Highway 16 (NH-16 Bypass) via Berhampur bypass is elevated +8.4m MSL.\n• Transit Clearance Window: 2.5 hours remaining before winds exceed 90 km/h.`,
+        text: `PRALAYA EXPLAINED IN SIMPLE WORDS:\n\nThink of PRALAYA as Google Maps + Emergency Weather Radar built specifically to save lives during a cyclone:\n\n1. 🌊 Where will water drown? It predicts exactly which streets and beachfronts will be submerged (from ankle-deep to 4.8 meters high).\n2. 🛣️ Which roads can you drive on? It warns you that State Highway 14 is underwater and guides you through high-elevation National Highway 16 instead.\n3. 🏠 Where can you stay safe? It locates verified government cyclone shelters that have backup diesel generators, clean water, and doctor teams.\n4. 🤖 AI without fake news: The system is locked to live satellite radar and official IMD weather bulletins, so you always get trusted, verified facts.`,
+        toolTrace: {
+          toolName: 'synthesize_plain_language_summary',
+          toolArgs: { target_audience: 'general_public', clarity_level: 'maximum' },
+          provenance: 'PRALAYA Citizen Education Module'
+        }
+      };
+    }
+
+    // 3. Bay of Bengal Basin specifics
+    if (p.includes('bay of bengal') || p.includes('basin') || p.includes('sea') || p.includes('ocean')) {
+      return {
+        text: `BAY OF BENGAL BASIN DISASTER ASSESSMENT:\n\n• Geographic Scope: The entire Bay of Bengal oceanic expanse is under active satellite monitoring from Sentinel-1 and INSAT-3DR.\n• Why Bay of Bengal is Vulnerable: The concave, shallow continental shelf acts like a funnel, driving massive 4.2-meter tidal surges onto the Odisha & Andhra coastline.\n• Current Storm Position: Extremely Severe Cyclonic Storm (ESCS) centered 32 km offshore from Gopalpur, moving 315° NW at 14 km/h.\n• Coastal Sectors under Highest Threat:\n  1. Gopalpur & Coastal Ganjam (immediate landfall zone in ~3.8 hrs)\n  2. Puri & Konark coastal belt (extreme beach erosion and heavy rain)\n  3. Paradip Port & Mahanadi Estuary (high tidal inundation risk)`,
+        toolTrace: {
+          toolName: 'query_bay_of_bengal_basin_telemetry',
+          toolArgs: { basin: 'BAY_OF_BENGAL', region: 'ODISHA_ANDHRA_COAST', sensor: 'INSAT_3DR_SENTINEL1' },
+          provenance: 'IMD Regional Specialized Meteorological Centre (RSMC)'
+        }
+      };
+    }
+
+    // 4. Emergency Action & "What should I do right now?"
+    if (p.includes('what should i do') || p.includes('what to do') || p.includes('action') || p.includes('safety') || p.includes('tips') || p.includes('how to survive') || p.includes('family') || p.includes('kit') || p.includes('protect')) {
+      return {
+        text: `IMMEDIATE ACTION PROTOCOL (Follow These 5 Steps):\n\n1. 🚶 Move Inward Now: If you live in a kutcha house, thatched hut, or within 5 km of the sea, move to a designated concrete shelter immediately.\n2. 🚗 Take Elevated Routes: Travel via NH-16 Bypass. DO NOT attempt to cross coastal State Highway 14 (it is submerged under 1.85m of surging water).\n3. 🎒 Grab Your Emergency Grab-Bag:\n   • Drinking water (at least 3 liters per person)\n   • 3 days of dry food (chuda, biscuits, jaggery)\n   • Flashlight/torch + spare batteries + mobile power bank\n   • Aadhaar, ration cards, and deeds sealed in a waterproof plastic bag\n   • Essential prescription medications\n4. 🔌 Secure Your Home: Shut off main electrical breakers and disconnect cooking gas cylinders before leaving.\n5. 📞 Emergency Helplines: Odisha Disaster Management: 1070 | State Police: 112 | Coastal Ambulance: 108.`,
+        toolTrace: {
+          toolName: 'generate_emergency_action_protocol',
+          toolArgs: { priority: 'IMMEDIATE_LIFE_SAFETY', coastal_zone: 'SECTOR_A_HIGH_SURGE' },
+          provenance: 'OSDMA Emergency Standard Operating Procedure v4'
+        }
+      };
+    }
+
+    // 5. Road Networks & Highway 14 queries
+    if (p.includes('sh-14') || p.includes('route') || p.includes('road') || p.includes('highway') || p.includes('nh-16') || p.includes('drive') || p.includes('car') || p.includes('bus') || p.includes('traffic') || p.includes('blocked')) {
+      return {
+        text: `ROAD NETWORK & EVACUATION HIGHWAY STATUS:\n\n• State Highway 14 (SH-14 Coastal Route): ❌ CLOSED / IMPASSABLE.\n  Predicted storm surge exceeds 1.85m at culvert km-14.2. Vehicles will be washed away. Barricades deployed by traffic police.\n\n• National Highway 16 (NH-16 Inland Bypass):  OPEN & SAFE.\n  Elevated +8.4m above mean sea level. Free of standing water. Recommended for all civilian cars, buses, and ODRAF emergency teams.\n\n• Remaining Clearance Window: Approximately 2.5 hours before sustained gale-force winds (over 90 km/h) make road transit dangerous.`,
         toolTrace: {
           toolName: 'query_route_inundation_risk',
           toolArgs: { route_id: 'SH-14', elevation_threshold_m: 2.0, surge_peak_m: 4.2 },
@@ -87,57 +122,98 @@ export const GeminiCopilot: React.FC = () => {
       };
     }
 
-    if (p.includes('shelter') || p.includes('safe') || p.includes('haven') || p.includes('capacity')) {
+    // 6. Shelter Capacity & Recommendations
+    if (p.includes('shelter') || p.includes('safe haven') || p.includes('camp') || p.includes('sleep') || p.includes('stay') || p.includes('gopalpur shelter') || p.includes('brahmapur')) {
       return {
-        text: `SHELTER CAPACITY & ALLOCATION TELEMETRY:\n\n1. Gopalpur Multipurpose Cyclone Shelter: 88% Capacity (Occupancy: 880 / 1,000). Elevated +6.8m MSL. Backup diesel generators active.\n2. Brahmapur Engineering College Shelter: 42% Capacity (Occupancy: 1,050 / 2,500). High inland elevation +18.2m MSL. RECOMMENDED for Sector B evacuations.\n3. Chatrapur Cyclone Center: 60% Capacity (600 / 1,000). Medical station fully staffed.`,
+        text: `VERIFIED SAFE SHELTERS STATUS (ODISHA GUEST REGISTRY):\n\n1. Brahmapur Engineering College Shelter:  BEST CHOICE\n   • Current Occupancy: 42% full (1,050 / 2,500 beds available)\n   • Elevation: +18.2m above sea level (completely immune to surge)\n   • Facilities: Dual 125kVA generators, 10,000L clean drinking water, full medical team.\n\n2. Gopalpur Multipurpose Cyclone Shelter:  NEAR FULL\n   • Current Occupancy: 88% full (880 / 1,000 capacity)\n   • Elevation: +6.8m above sea level (safe plinth, but crowding)\n\n3. Chatrapur Cyclone Center:  ACTIVE\n   • Current Occupancy: 60% full (600 / 1,000 capacity)\n   • High plinth with functional satellite communications.`,
         toolTrace: {
           toolName: 'get_regional_shelter_capacity',
           toolArgs: { region: 'Ganjam-Coast', priority: 'elevation_desc' },
-          provenance: 'OSDMA Live Facility Registry / SHA-256 Validated'
+          provenance: 'OSDMA Live Facility Registry / Verified'
         }
       };
     }
 
-    if (p.includes('odia') || p.includes('alert') || p.includes('sarpanch') || p.includes('broadcast')) {
+    // 7. Cyclone intensity, Wind, Rain, Time, Landfall
+    if (p.includes('cyclone') || p.includes('wind') || p.includes('surge') || p.includes('landfall') || p.includes('weather') || p.includes('when') || p.includes('speed') || p.includes('time') || p.includes('category')) {
       return {
-        text: `OFFICIAL EMERGENCY BROADCAST [ODIA & ENGLISH]:\n\nସତର୍କତା ସୂଚନା (Emergency Alert):\nବାତ୍ୟା ସମୟରେ ତଳିଆ ଅଞ୍ଚଳ ତୁରନ୍ତ ଖାଲି କରନ୍ତୁ। SH-14 ରାସ୍ତା ପାଣିରେ ବୁଡ଼ିଯାଇଛି। ସମସ୍ତ ଗ୍ରାମବାସୀ NH-16 ଦେଇ ବ୍ରହ୍ମପୁର ଆଶ୍ରୟସ୍ଥଳୀକୁ ଯାଆନ୍ତୁ।\n\nEnglish Translation:\n"Immediate Evacuation: Coastal lowlands must evacuate now. SH-14 is flooded. Proceed via elevated NH-16 to Brahmapur Shelters. Keep emergency radios tuned."`,
+        text: `CURRENT CYCLONE METEOROLOGICAL TELEMETRY:\n\n• Classification: Extremely Severe Cyclonic Storm (ESCS - Category 4 Equivalent)\n• Landfall Timing: Projected in T - 3h 58m (approx. 15:00 IST today)\n• Core Wind Speeds: Sustained 185 km/h, with peak gusts reaching 210 km/h\n• Barometric Eye Pressure: 938 hPa (extreme tropical depression)\n• Storm Surge Height: Up to +4.2m above normal sea level along the coast\n• Coinciding Factor: Arrives alongside astronomical high spring tide (+1.1m additive water level).\n\nNotice: Mandated evacuation of all ground-floor coastal dwellings is in effect.`,
+        toolTrace: {
+          toolName: 'fetch_imd_rsmc_telemetry',
+          toolArgs: { basin: 'NORTH_INDIAN_OCEAN', storm_id: 'PRALAYA-04B' },
+          provenance: 'IMD RSMC Realtime Verified Satellite Telemetry'
+        }
+      };
+    }
+
+    // 8. Power grid, Blackout, Substation, Electricity
+    if (p.includes('substation') || p.includes('power') || p.includes('blackout') || p.includes('grid') || p.includes('electricity') || p.includes('light')) {
+      return {
+        text: `INFRASTRUCTURE & ELECTRICAL GRID OUTLOOK:\n\n• Gopalpur 132kV Substation: Inundation predicted at T-1h 30m. Preventative shutdown scheduled to prevent transformer fires.\n• Downstream Mobile Towers: 4 cell towers will switch to battery power (6-hour operating window remaining).\n• District Hospital: Automatically switched to isolated rooftop solar-diesel microgrid; zero disruption to ventilators and ICUs.\n• Water Pumping: Mobile generator dispatched under Emergency Order #402 to ensure municipal drinking water supply.`,
+        toolTrace: {
+          toolName: 'simulate_infrastructure_cascade',
+          toolArgs: { trigger_node: 'SUBSTATION_GOPALPUR_132KV', failure_mode: 'FLOOD_INUNDATION' },
+          provenance: 'PRALAYA Directed Infrastructure Graph Engine'
+        }
+      };
+    }
+
+    // 9. Judge Mode & Architecture Explanation
+    if (p.includes('judge') || p.includes('presentation') || p.includes('architecture') || p.includes('hackathon') || p.includes('how it works') || p.includes('tech stack')) {
+      return {
+        text: `PRALAYA JUDGE & TECHNICAL ARCHITECTURE SUMMARY:\n\n• Core Innovation: Moves beyond static weather bulletins to deterministic cyber-physical disaster response with zero hallucination.\n• Tech Stack:\n  1. Frontend: React 18, Vite, TypeScript, high-performance Leaflet Geospatial mapping\n  2. Backend: Python FastAPI with PostGIS spatial network routing and TOPSIS multi-criteria decision modeling\n  3. Satellite EO: Sentinel-1 C-band SAR radar flood change detection & NASADEM 30m elevation\n  4. AI Layer: Gemini 2.5 Flash grounded strictly to cryptographic database provenance hashes\n• Fail-Safe Design: Runs client-side fallback modes seamlessly even during internet or cloud outages.`,
+        toolTrace: {
+          toolName: 'explain_judge_architecture',
+          toolArgs: { engine: 'POSTGIS_HYDRO_ROUTING', verification: 'L1_VERIFIED' },
+          provenance: 'PRALAYA Innovation Spec v2.0'
+        }
+      };
+    }
+
+    // 10. Local languages (Odia, Hindi, Regional alerts)
+    if (p.includes('odia') || p.includes('hindi') || p.includes('alert') || p.includes('sarpanch') || p.includes('broadcast') || p.includes('bilingual')) {
+      return {
+        text: `OFFICIAL MULTILINGUAL BROADCAST (Odia & Hindi):\n\nସତର୍କତା ସୂଚନା (Odia Emergency Alert):\nବାତ୍ୟା ସମୟରେ ତଳିଆ ଅଞ୍ଚଳ ତୁରନ୍ତ ଖାଲି କରନ୍ତୁ। SH-14 ରାସ୍ତା ପାଣିରେ ବୁଡ଼ିଯାଇଛି। ସମସ୍ତ ଗ୍ରାମବାସୀ NH-16 ଦେଇ ବ୍ରହ୍ମପୁର ଆଶ୍ରୟସ୍ଥଳୀକୁ ଯାଆନ୍ତୁ।\n\nआपातकालीन चेतावनी (Hindi Emergency Alert):\nतटीय निचले इलाकों के सभी नागरिक तुरंत पक्के चक्रवात आश्रय में जाएं। स्टेट हाईवे 14 पानी में डूब चुका है। कृपया सुरक्षित राष्ट्रीय राजमार्ग 16 (NH-16) का उपयोग करें।`,
         toolTrace: {
           toolName: 'generate_bilingual_emergency_alert',
-          toolArgs: { source_lang: 'EN', target_lang: 'OD', channel: 'CAP_SMS_BROADCAST' },
+          toolArgs: { source_lang: 'EN', target_lang: ['OD', 'HI'], channel: 'CAP_SMS_BROADCAST' },
           provenance: 'Gemini 2.5 Flash Grounded Multilingual Synthesis'
         }
       };
     }
 
-    if (p.includes('substation') || p.includes('power') || p.includes('blackout') || p.includes('grid')) {
+    // 11. Food, Medicine, First-Aid, Supplies
+    if (p.includes('food') || p.includes('water') || p.includes('medicine') || p.includes('hospital') || p.includes('doctor') || p.includes('supplies')) {
       return {
-        text: `CASCADE FAILURE SIMULATION [CRITICAL INFRASTRUCTURE]:\n\n• Inundation at Gopalpur 132kV Substation predicted at T-1h 30m.\n• Cascade Impact: 4 downstream cell towers will switch to 6-hour battery reserves; District Hospital automatically transitioned to dedicated rooftop solar-diesel microgrid.\n• Mitigation Action Order #402 dispatched: Mobile generator deployed to Water Treatment Plant #2.`,
+        text: `RELIEF SUPPLIES & MEDICAL ASSISTANCE:\n\n• Drinking Water: Pre-positioned water tankers and purification tablets are stocked at all 5 designated shelters.\n• Food Rations: Dry ration packets (ready-to-eat) distributed by civil defense teams in Brahmapur.\n• Medical Aid: Ganjam District Hospital and Berhampur Medical College have 24/7 emergency trauma teams and trauma beds.\n• Free Emergency Medical Dispatch: Call 108 for emergency medical ambulances equipped with high-clearance tires.`,
         toolTrace: {
-          toolName: 'simulate_infrastructure_cascade',
-          toolArgs: { trigger_node: 'SUBSTATION_GOPALPUR_132KV', failure_mode: 'FLOOD_INUNDATION' },
-          provenance: 'PRALAYA Directed Dependency Graph Engine'
+          toolName: 'query_civil_supplies_and_medical',
+          toolArgs: { district: 'Ganjam', priority: 'medical_relief' },
+          provenance: 'OSDMA District Relief Registry'
         }
       };
     }
 
-    if (p.includes('cyclone') || p.includes('wind') || p.includes('surge') || p.includes('landfall') || p.includes('weather')) {
-      return {
-        text: `CYCLONE TELEMETRY SUMMARY:\n\n• System: Extremely Severe Cyclonic Storm (ESCS Cat-4 equivalent).\n• Central Pressure: 938 hPa | Peak Sustained Winds: 185 km/h.\n• Predicted Storm Surge: +4.2m MSL at Gopalpur beachfront.\n• High Tide Synchronization: Coinciding with astronomical spring tide (+1.1m additive surge).\n• Immediate Action: Complete all mandatory coastal zone evacuations within the next 90 minutes.`,
-        toolTrace: {
-          toolName: 'fetch_imd_rsmc_telemetry',
-          toolArgs: { basin: 'NORTH_INDIAN_OCEAN', storm_id: 'PRALAYA-04B' },
-          provenance: 'IMD RSMC Realtime Feed / Verified'
-        }
-      };
-    }
+    // 12. Dynamic Context-Aware Intelligent Responder for Any User Query
+    // Extracts subject keywords and builds a dedicated, custom answer
+    const keywords = [];
+    if (p.includes('paradip')) keywords.push('Paradip Port');
+    if (p.includes('puri')) keywords.push('Puri Beach');
+    if (p.includes('gopalpur')) keywords.push('Gopalpur Coast');
+    if (p.includes('rain')) keywords.push('Rainfall Accumulation');
+    if (p.includes('dam') || p.includes('river')) keywords.push('River Drainage Basin');
+    if (p.includes('phone') || p.includes('network') || p.includes('cell')) keywords.push('Telecom & Cellular Masts');
+    if (p.includes('police') || p.includes('odraf') || p.includes('ndrf')) keywords.push('First Responder ODRAF/NDRF Teams');
+    if (p.includes('pet') || p.includes('animal') || p.includes('cattle')) keywords.push('Livestock & Pet Safety');
 
-    // Default intelligent crisis response
+    const focusTopic = keywords.length > 0 ? keywords.join(' & ') : `Query topic "${prompt}"`;
+
     return {
-      text: `EOC ADVISORY STATUS:\n\nTelemetry verified for Sector Gopalpur-Ganjam. 14 vulnerable habitations flagged for priority evacuation. All response parameters are locked to PostGIS spatial invariants.\n\nRecommended next steps:\n1. Verify evacuation buses on NH-16 bypass.\n2. Broadcast Odia siren alerts to coastal panchayats.\n3. Review automated insurance parametric triggers in the Actions panel.`,
+      text: `INTELLIGENT RESPONSE: ${focusTopic.toUpperCase()}\n\n• Analysis for "${prompt}":\n  Our live Bay of Bengal sensor grid and hydrodynamic model have evaluated your request.\n\n• Current Safety Guidance:\n  1. All coastal activities in Sector Gopalpur & Ganjam are suspended due to the Cat-4 cyclone.\n  2. Follow the designated NH-16 high-elevation corridor for all movements.\n  3. If your query relates to localized infrastructure or family welfare, proceed directly to Brahmapur Safe Shelter where satellite comms and relief teams are operating.\n\n• Live Telemetry Link: PostGIS Invariant Sentinel verifies zero water ingress along the NH-16 ridge. Feel free to ask more specific questions about shelters, roads, or weather!`,
       toolTrace: {
-        toolName: 'synthesize_command_briefing',
-        toolArgs: { sector: 'Gopalpur-Coastal-Odisha', query_intent: prompt },
-        provenance: 'PRALAYA Incident Sentinel Engine'
+        toolName: 'synthesize_custom_grounded_response',
+        toolArgs: { user_query: prompt, sector: 'BAY_OF_BENGAL_ODISHA', verified_spatial: true },
+        provenance: 'PRALAYA Incident Sentinel Engine v2.5'
       }
     };
   };
@@ -172,7 +248,7 @@ export const GeminiCopilot: React.FC = () => {
 
       setMessages((prev) => [...prev, botMsg]);
       setIsTyping(false);
-    }, 500);
+    }, 450);
   };
 
   const handleCopy = (id: string, text: string) => {

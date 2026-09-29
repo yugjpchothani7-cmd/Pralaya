@@ -48,36 +48,29 @@ export const RiskSummary: React.FC<RiskSummaryProps> = ({
   const shockDelta = (surgeShock * 3.2) + (rainShock * 0.03) + (highTide ? 2.5 : 0) + (gridBlackout ? 3.8 : 0);
   const compositeRisk = Math.min(99.4, Number((baseRisk + shockDelta).toFixed(1)));
 
-  const getRiskColor = (score: number) => {
-    if (score >= 85) return 'var(--color-simulated)';
-    if (score >= 65) return 'var(--color-modeled)';
-    return 'var(--color-observed)';
-  };
-
-  const riskColor = getRiskColor(compositeRisk);
-
   return (
-    <div className="responsive-panel glass-panel" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--gap-md)', height: '100%', overflowY: 'auto', padding: 'var(--gap-md)' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', height: '100%', overflowY: 'auto', paddingRight: '2px' }}>
+      
       {/* Primary Composite Risk Scorecard */}
       <div style={{
-        padding: '14px',
-        background: 'linear-gradient(135deg, rgba(30, 15, 25, 0.9), rgba(15, 23, 42, 0.95))',
-        border: `1px solid ${riskColor}`,
-        borderRadius: '8px',
+        padding: '14px 16px',
+        background: '#fff1f2',
+        border: '1.5px solid #fecdd3',
+        borderRadius: '10px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        boxShadow: `0 0 20px rgba(244, 63, 94, 0.2)`
+        boxShadow: '0 2px 6px rgba(225, 29, 72, 0.08)'
       }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
-            <ShieldAlert size={16} color={riskColor} />
-            <span style={{ fontSize: '11px', fontWeight: 800, letterSpacing: '0.06em', color: '#fff', textTransform: 'uppercase' }}>
-              COMPOSITE RISK INDEX
+            <ShieldAlert size={18} color="#e11d48" />
+            <span style={{ fontSize: '12px', fontWeight: 800, letterSpacing: '0.04em', color: '#9f1239', textTransform: 'uppercase' }}>
+              OVERALL DANGER LEVEL
             </span>
           </div>
-          <p style={{ margin: 0, fontSize: '10px', color: 'var(--text-secondary)' }}>
-            Physical Hazard × Exposure × Socio-Demographic Vulnerability
+          <p style={{ margin: 0, fontSize: '11px', color: '#475569' }}>
+            Combined Storm Surge + Flood Depth + Fragility
           </p>
           {(surgeShock > 0 || rainShock > 0 || highTide || gridBlackout) && (
             <div style={{
@@ -85,16 +78,17 @@ export const RiskSummary: React.FC<RiskSummaryProps> = ({
               alignItems: 'center',
               gap: '4px',
               marginTop: '6px',
-              fontSize: '9.5px',
+              fontSize: '10px',
               fontFamily: 'var(--font-mono)',
-              color: 'var(--accent-amber)',
-              background: 'rgba(245, 158, 11, 0.15)',
-              padding: '2px 6px',
+              color: '#b45309',
+              background: '#fef3c7',
+              padding: '2px 8px',
               borderRadius: '4px',
-              border: '1px solid rgba(245, 158, 11, 0.3)'
+              border: '1px solid #fde68a',
+              fontWeight: 700
             }}>
-              <Sliders size={10} />
-              <span>Simulated Delta: +{shockDelta.toFixed(1)} pts</span>
+              <Sliders size={11} />
+              <span>Simulated Surge: +{shockDelta.toFixed(1)}% Danger</span>
             </div>
           )}
         </div>
@@ -105,43 +99,59 @@ export const RiskSummary: React.FC<RiskSummaryProps> = ({
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          background: 'rgba(0, 0, 0, 0.4)',
+          background: '#ffffff',
           borderRadius: '50%',
-          width: '72px',
-          height: '72px',
-          border: `2px solid ${riskColor}`,
-          boxShadow: `0 0 14px ${riskColor}`
+          width: '74px',
+          height: '74px',
+          border: '3px solid #e11d48',
+          boxShadow: '0 2px 8px rgba(225, 29, 72, 0.2)'
         }}>
-          <span className="badge" style={{
-            fontSize: 'var(--font-size-lg)',
-            fontWeight: 700,
+          <span style={{
+            fontSize: '19px',
+            fontWeight: 900,
             fontFamily: 'var(--font-mono)',
-            color: '#fff',
+            color: '#be123c',
             lineHeight: 1
           }}>
             {compositeRisk}%
           </span>
-          <span style={{ fontSize: '8.5px', fontWeight: 800, color: riskColor, letterSpacing: '0.04em', marginTop: '2px' }}>
-            EXTREME
+          <span style={{ fontSize: '9px', fontWeight: 800, color: '#e11d48', letterSpacing: '0.04em', marginTop: '2px' }}>
+            CRITICAL
           </span>
         </div>
       </div>
 
       {/* Exposed Population Metric Banner */}
-      <div className="glass-panel responsive-panel">
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--gap-sm)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--gap-sm)' }}>
-            <Users size={15} color="var(--accent-cyan)" />
-            <span className="badge badge-observed">EXPOSED POPULATION</span>
+      <div style={{
+        padding: '14px 16px',
+        background: '#ffffff',
+        border: '1px solid #e2e8f0',
+        borderRadius: '10px',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.04)'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <Users size={16} color="#0284c7" />
+            <span style={{ fontSize: '12px', fontWeight: 800, color: '#0f172a' }}>PEOPLE IN FLOOD PATH</span>
           </div>
-          <span className="badge" style={{ fontFamily: 'var(--font-mono)' }}>Ganjam Coastal AOI</span>
+          <span style={{
+            fontSize: '10px',
+            fontFamily: 'var(--font-mono)',
+            fontWeight: 700,
+            background: '#e0f2fe',
+            color: '#0369a1',
+            padding: '2px 6px',
+            borderRadius: '4px'
+          }}>
+            Ganjam Coastal Region
+          </span>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '8px' }}>
-          <span style={{ fontSize: '24px', fontWeight: 900, fontFamily: 'var(--font-mono)', color: '#fff' }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '12px' }}>
+          <span style={{ fontSize: '26px', fontWeight: 900, fontFamily: 'var(--font-mono)', color: '#0f172a', letterSpacing: '-0.02em' }}>
             {totalExposedPop.toLocaleString()}
           </span>
-          <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>individuals in inundation path</span>
+          <span style={{ fontSize: '12px', color: '#475569', fontWeight: 500 }}>citizens living in coastal danger zone</span>
         </div>
 
         {/* Breakdown Demographics 2x2 */}
@@ -152,68 +162,68 @@ export const RiskSummary: React.FC<RiskSummaryProps> = ({
         }}>
           {/* Infants < 5 */}
           <div style={{
-            background: 'rgba(10, 16, 30, 0.6)',
-            padding: '8px 10px',
-            borderRadius: '6px',
-            border: '1px solid var(--border-subtle)'
+            background: '#f8fafc',
+            padding: '10px 12px',
+            borderRadius: '8px',
+            border: '1px solid #e2e8f0'
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--text-muted)', fontSize: '10px', marginBottom: '2px' }}>
-              <Baby size={12} color="var(--accent-purple)" />
-              <span>INFANTS (&lt;5 YRS)</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px', color: '#64748b', fontSize: '10px', fontWeight: 700, marginBottom: '2px' }}>
+              <Baby size={13} color="#7c3aed" />
+              <span>BABIES & INFANTS (&lt;5 YRS)</span>
             </div>
-            <span style={{ fontSize: '14px', fontWeight: 800, fontFamily: 'var(--font-mono)', color: '#fff' }}>
+            <span style={{ fontSize: '15px', fontWeight: 800, fontFamily: 'var(--font-mono)', color: '#0f172a' }}>
               {infants.toLocaleString()}
             </span>
           </div>
 
           {/* Elderly 65+ */}
           <div style={{
-            background: 'rgba(10, 16, 30, 0.6)',
-            padding: '8px 10px',
-            borderRadius: '6px',
-            border: '1px solid var(--border-subtle)'
+            background: '#f8fafc',
+            padding: '10px 12px',
+            borderRadius: '8px',
+            border: '1px solid #e2e8f0'
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--text-muted)', fontSize: '10px', marginBottom: '2px' }}>
-              <HeartHandshake size={12} color="var(--accent-rose)" />
-              <span>ELDERLY (65+)</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px', color: '#64748b', fontSize: '10px', fontWeight: 700, marginBottom: '2px' }}>
+              <HeartHandshake size={13} color="#e11d48" />
+              <span>SENIOR CITIZENS (65+)</span>
             </div>
-            <span style={{ fontSize: '14px', fontWeight: 800, fontFamily: 'var(--font-mono)', color: '#fff' }}>
+            <span style={{ fontSize: '15px', fontWeight: 800, fontFamily: 'var(--font-mono)', color: '#0f172a' }}>
               {elderly.toLocaleString()}
             </span>
           </div>
 
           {/* Kutcha Dwellings */}
           <div style={{
-            background: 'rgba(10, 16, 30, 0.6)',
-            padding: '8px 10px',
-            borderRadius: '6px',
-            border: '1px solid var(--border-subtle)'
+            background: '#f8fafc',
+            padding: '10px 12px',
+            borderRadius: '8px',
+            border: '1px solid #e2e8f0'
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--text-muted)', fontSize: '10px', marginBottom: '2px' }}>
-              <Home size={12} color="var(--accent-amber)" />
-              <span>KUTCHA / LIVESTOCK</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px', color: '#64748b', fontSize: '10px', fontWeight: 700, marginBottom: '2px' }}>
+              <Home size={13} color="#d97706" />
+              <span>MUD / THATCHED HUTS</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
-              <span style={{ fontSize: '14px', fontWeight: 800, fontFamily: 'var(--font-mono)', color: '#fff' }}>
+              <span style={{ fontSize: '15px', fontWeight: 800, fontFamily: 'var(--font-mono)', color: '#0f172a' }}>
                 {kutchaDwellings.toLocaleString()}
               </span>
-              <span style={{ fontSize: '9px', color: 'var(--text-muted)' }}>({livestock.toLocaleString()} cattle)</span>
+              <span style={{ fontSize: '10px', color: '#64748b' }}>({livestock.toLocaleString()} cattle)</span>
             </div>
           </div>
 
           {/* Economic Exposure */}
           <div style={{
-            background: 'rgba(10, 16, 30, 0.6)',
-            padding: '8px 10px',
-            borderRadius: '6px',
-            border: '1px solid var(--border-subtle)'
+            background: '#f8fafc',
+            padding: '10px 12px',
+            borderRadius: '8px',
+            border: '1px solid #e2e8f0'
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--text-muted)', fontSize: '10px', marginBottom: '2px' }}>
-              <Coins size={12} color="var(--accent-emerald)" />
-              <span>ASSET EXPOSURE</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px', color: '#64748b', fontSize: '10px', fontWeight: 700, marginBottom: '2px' }}>
+              <Coins size={13} color="#059669" />
+              <span>HOMES & CROPS AT RISK</span>
             </div>
-            <span style={{ fontSize: '14px', fontWeight: 800, fontFamily: 'var(--font-mono)', color: '#fff' }}>
-              ₹{economicExposureCr} Cr
+            <span style={{ fontSize: '15px', fontWeight: 800, fontFamily: 'var(--font-mono)', color: '#0f172a' }}>
+              ₹{economicExposureCr} Crores
             </span>
           </div>
         </div>
@@ -221,48 +231,49 @@ export const RiskSummary: React.FC<RiskSummaryProps> = ({
 
       {/* Vulnerability Sub-Index Progress Bars */}
       <div style={{
-        padding: '12px 14px',
-        background: 'rgba(15, 23, 42, 0.75)',
-        border: '1px solid var(--border-subtle)',
-        borderRadius: '8px'
+        padding: '14px 16px',
+        background: '#ffffff',
+        border: '1px solid #e2e8f0',
+        borderRadius: '10px',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.04)'
       }}>
-        <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: '10px' }}>
-          VULNERABILITY VECTOR DECOMPOSITION
+        <span style={{ fontSize: '11px', fontWeight: 800, color: '#475569', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block', marginBottom: '10px' }}>
+          HAZARD BREAKDOWN BY RISK FACTOR
         </span>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           {/* Physical Inundation Hazard */}
           <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', marginBottom: '3px' }}>
-              <span style={{ color: 'var(--text-secondary)' }}>Physical Inundation Depth</span>
-              <span style={{ fontFamily: 'var(--font-mono)', color: '#fff', fontWeight: 700 }}>92%</span>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', marginBottom: '4px' }}>
+              <span style={{ color: '#475569', fontWeight: 600 }}>Sea Surge & Inundation Depth</span>
+              <span style={{ fontFamily: 'var(--font-mono)', color: '#e11d48', fontWeight: 800 }}>92% Extreme</span>
             </div>
-            <div style={{ width: '100%', height: '5px', background: 'rgba(255, 255, 255, 0.08)', borderRadius: '3px', overflow: 'hidden' }}>
-              <div style={{ width: '92%', height: '100%', background: 'var(--accent-rose)', borderRadius: '3px' }} />
+            <div style={{ width: '100%', height: '6px', background: '#e2e8f0', borderRadius: '3px', overflow: 'hidden' }}>
+              <div style={{ width: '92%', height: '100%', background: '#e11d48', borderRadius: '3px' }} />
             </div>
           </div>
 
           {/* Demographic Fragility */}
           <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', marginBottom: '3px' }}>
-              <span style={{ color: 'var(--text-secondary)' }}>Demographic Fragility (Age & Housing)</span>
-              <span style={{ fontFamily: 'var(--font-mono)', color: '#fff', fontWeight: 700 }}>84%</span>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', marginBottom: '4px' }}>
+              <span style={{ color: '#475569', fontWeight: 600 }}>Vulnerable Housing & Age</span>
+              <span style={{ fontFamily: 'var(--font-mono)', color: '#d97706', fontWeight: 800 }}>84% High</span>
             </div>
-            <div style={{ width: '100%', height: '5px', background: 'rgba(255, 255, 255, 0.08)', borderRadius: '3px', overflow: 'hidden' }}>
-              <div style={{ width: '84%', height: '100%', background: 'var(--accent-amber)', borderRadius: '3px' }} />
+            <div style={{ width: '100%', height: '6px', background: '#e2e8f0', borderRadius: '3px', overflow: 'hidden' }}>
+              <div style={{ width: '84%', height: '100%', background: '#d97706', borderRadius: '3px' }} />
             </div>
           </div>
 
           {/* Critical Infrastructure Cutoff */}
           <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', marginBottom: '3px' }}>
-              <span style={{ color: 'var(--text-secondary)' }}>Road & Power Isolation Risk</span>
-              <span style={{ fontFamily: 'var(--font-mono)', color: '#fff', fontWeight: 700 }}>
-                {gridBlackout ? '98%' : '89%'}
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', marginBottom: '4px' }}>
+              <span style={{ color: '#475569', fontWeight: 600 }}>Road & Power Cutoff Risk</span>
+              <span style={{ fontFamily: 'var(--font-mono)', color: '#7c3aed', fontWeight: 800 }}>
+                {gridBlackout ? '98% (Isolated)' : '89% (High)'}
               </span>
             </div>
-            <div style={{ width: '100%', height: '5px', background: 'rgba(255, 255, 255, 0.08)', borderRadius: '3px', overflow: 'hidden' }}>
-              <div style={{ width: gridBlackout ? '98%' : '89%', height: '100%', background: 'var(--accent-purple)', borderRadius: '3px' }} />
+            <div style={{ width: '100%', height: '6px', background: '#e2e8f0', borderRadius: '3px', overflow: 'hidden' }}>
+              <div style={{ width: gridBlackout ? '98%' : '89%', height: '100%', background: '#7c3aed', borderRadius: '3px' }} />
             </div>
           </div>
         </div>

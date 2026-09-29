@@ -31,18 +31,19 @@ export const WhatIfSandbox: React.FC<WhatIfSandboxProps> = ({
       display: 'flex',
       flexDirection: 'column',
       gap: '8px',
-      background: 'rgba(15, 23, 42, 0.85)',
+      background: '#f8fafc',
       padding: '10px 14px',
       borderRadius: '8px',
-      border: isShockActive ? '1px solid rgba(245, 158, 11, 0.4)' : '1px solid var(--border-subtle)',
+      border: isShockActive ? '1.5px solid #f59e0b' : '1px solid #e2e8f0',
+      boxShadow: '0 1px 3px rgba(0,0,0,0.03)',
       minWidth: '460px'
     }}>
       {/* Header & Reset Button */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <Sliders size={14} color="var(--accent-amber)" />
-          <span style={{ fontSize: '11px', fontWeight: 800, color: '#fff', letterSpacing: '0.04em' }}>
-            WHAT-IF COUNTERFACTUAL ENGINE
+          <Sliders size={14} color="#d97706" />
+          <span style={{ fontSize: '11px', fontWeight: 800, color: '#0f172a', letterSpacing: '0.04em' }}>
+            WEATHER SIMULATOR (Test Worse Conditions)
           </span>
           {isShockActive && (
             <span style={{
@@ -50,8 +51,9 @@ export const WhatIfSandbox: React.FC<WhatIfSandboxProps> = ({
               fontFamily: 'var(--font-mono)',
               padding: '1px 5px',
               borderRadius: '3px',
-              background: 'rgba(245, 158, 11, 0.2)',
-              color: 'var(--accent-amber)',
+              background: '#fef3c7',
+              color: '#b45309',
+              border: '1px solid #fde68a',
               fontWeight: 800
             }}>
               LIVE RECALC
@@ -63,12 +65,13 @@ export const WhatIfSandbox: React.FC<WhatIfSandboxProps> = ({
           <button
             onClick={onReset}
             style={{
-              background: 'rgba(255, 255, 255, 0.08)',
-              border: '1px solid var(--border-subtle)',
+              background: '#ffffff',
+              border: '1px solid #cbd5e1',
               borderRadius: '4px',
               padding: '2px 8px',
-              color: 'var(--text-secondary)',
+              color: '#475569',
               fontSize: '10px',
+              fontWeight: 600,
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
@@ -86,11 +89,11 @@ export const WhatIfSandbox: React.FC<WhatIfSandboxProps> = ({
         {/* Surge Shock Slider */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--text-secondary)' }}>
-              <Waves size={11} color="var(--accent-cyan)" />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#475569', fontWeight: 600 }}>
+              <Waves size={11} color="#0284c7" />
               <span>Surge Delta:</span>
             </div>
-            <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: surgeShock > 0 ? 'var(--accent-amber)' : '#fff' }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, color: surgeShock > 0 ? '#b45309' : '#0f172a' }}>
               +{surgeShock.toFixed(1)}m
             </span>
           </div>
@@ -102,7 +105,7 @@ export const WhatIfSandbox: React.FC<WhatIfSandboxProps> = ({
             value={surgeShock}
             onChange={(e) => onChangeSurgeShock(parseFloat(e.target.value))}
             style={{
-              accentColor: 'var(--accent-amber)',
+              accentColor: '#d97706',
               cursor: 'pointer',
               height: '4px',
               width: '100%'
@@ -113,11 +116,11 @@ export const WhatIfSandbox: React.FC<WhatIfSandboxProps> = ({
         {/* Rain Shock Slider */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--text-secondary)' }}>
-              <CloudRain size={11} color="var(--accent-cyan)" />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#475569', fontWeight: 600 }}>
+              <CloudRain size={11} color="#0284c7" />
               <span>Rain Shock:</span>
             </div>
-            <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: rainShock > 0 ? 'var(--accent-amber)' : '#fff' }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, color: rainShock > 0 ? '#b45309' : '#0f172a' }}>
               +{rainShock}mm
             </span>
           </div>
@@ -129,7 +132,7 @@ export const WhatIfSandbox: React.FC<WhatIfSandboxProps> = ({
             value={rainShock}
             onChange={(e) => onChangeRainShock(parseInt(e.target.value, 10))}
             style={{
-              accentColor: 'var(--accent-cyan)',
+              accentColor: '#0284c7',
               cursor: 'pointer',
               height: '4px',
               width: '100%'
@@ -141,21 +144,22 @@ export const WhatIfSandbox: React.FC<WhatIfSandboxProps> = ({
         <button
           onClick={onToggleHighTide}
           style={{
-            background: highTide ? 'rgba(56, 189, 248, 0.2)' : 'rgba(255, 255, 255, 0.05)',
-            border: highTide ? '1px solid var(--accent-cyan)' : '1px solid var(--border-subtle)',
+            background: highTide ? '#e0f2fe' : '#ffffff',
+            border: highTide ? '1px solid #0284c7' : '1px solid #cbd5e1',
             borderRadius: '6px',
             padding: '5px 8px',
-            color: highTide ? 'var(--accent-cyan)' : 'var(--text-muted)',
+            color: highTide ? '#0369a1' : '#475569',
             fontSize: '10px',
             fontWeight: 700,
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
-            gap: '4px'
+            gap: '4px',
+            boxShadow: '0 1px 2px rgba(0,0,0,0.02)'
           }}
           title="Simulate Astronomical High Tide Coincidence (+0.8m)"
         >
-          <Moon size={11} />
+          <Moon size={11} color={highTide ? '#0284c7' : '#64748b'} />
           <span>High Tide</span>
         </button>
 
@@ -163,21 +167,22 @@ export const WhatIfSandbox: React.FC<WhatIfSandboxProps> = ({
         <button
           onClick={onToggleGridBlackout}
           style={{
-            background: gridBlackout ? 'rgba(244, 63, 94, 0.25)' : 'rgba(255, 255, 255, 0.05)',
-            border: gridBlackout ? '1px solid var(--accent-rose)' : '1px solid var(--border-subtle)',
+            background: gridBlackout ? '#fee2e2' : '#ffffff',
+            border: gridBlackout ? '1px solid #dc2626' : '1px solid #cbd5e1',
             borderRadius: '6px',
             padding: '5px 8px',
-            color: gridBlackout ? 'var(--accent-rose)' : 'var(--text-muted)',
+            color: gridBlackout ? '#b91c1c' : '#475569',
             fontSize: '10px',
             fontWeight: 700,
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
-            gap: '4px'
+            gap: '4px',
+            boxShadow: '0 1px 2px rgba(0,0,0,0.02)'
           }}
           title="Simulate Complete Regional Power Grid Tripping"
         >
-          <ZapOff size={11} />
+          <ZapOff size={11} color={gridBlackout ? '#dc2626' : '#64748b'} />
           <span>Grid Cut</span>
         </button>
       </div>

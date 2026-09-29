@@ -52,7 +52,7 @@ export const MetricCard: React.FC<MetricCardProps> = ({
           width: '36px',
           height: '36px',
           borderRadius: '8px',
-          background: 'rgba(255, 255, 255, 0.05)',
+          background: selectedBadge.bg,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -63,7 +63,7 @@ export const MetricCard: React.FC<MetricCardProps> = ({
       </div>
 
       <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '4px' }}>
-        <span style={{ fontSize: '26px', fontWeight: 800, color: '#fff', fontFamily: 'var(--font-sans)', letterSpacing: '-0.02em' }}>
+        <span style={{ fontSize: '26px', fontWeight: 800, color: '#0f172a', fontFamily: 'var(--font-sans)', letterSpacing: '-0.02em' }}>
           {value}
         </span>
         {badge && (

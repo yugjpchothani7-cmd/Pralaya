@@ -58,13 +58,13 @@ export const RightPanel: React.FC<RightPanelProps> = ({
         border: '1px solid #e2e8f0'
       }}>
         {[
-          { id: 'copilot', label: 'AI Copilot', icon: Bot },
-          { id: 'risk', label: 'Risk Map', icon: AlertTriangle },
-          { id: 'infra', label: 'Shelters', icon: Building2 },
-          { id: 'actions', label: 'Orders', icon: CheckSquare },
+          { id: 'copilot', label: 'AI Helper', icon: Bot },
+          { id: 'risk', label: 'Danger Map', icon: AlertTriangle },
+          { id: 'infra', label: 'Safe Shelters', icon: Building2 },
+          { id: 'actions', label: 'Rescue Orders', icon: CheckSquare },
           { id: 'simulation', label: 'Simulate', icon: Bot },
-          { id: 'insurance', label: 'Insurance', icon: Shield },
-          { id: 'trust', label: 'Trust Audit', icon: Fingerprint },
+          { id: 'insurance', label: 'Relief Aid', icon: Shield },
+          { id: 'trust', label: 'Data Audit', icon: Fingerprint },
         ].map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;

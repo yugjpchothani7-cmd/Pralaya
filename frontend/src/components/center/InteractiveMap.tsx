@@ -107,14 +107,21 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
     return () => { isMounted = false; };
   }, [layers, selectedRegion]);
 
+  // Strict Bay of Bengal geographic bounding box (Restricts map view solely to Bay of Bengal & coastal sectors)
+  const BAY_OF_BENGAL_BOUNDS = L.latLngBounds([5.5, 78.0], [23.5, 96.0]);
+
   // Initialize Leaflet Map
   useEffect(() => {
     if (!mapContainerRef.current) return;
 
     if (!mapInstanceRef.current) {
       const map = L.map(mapContainerRef.current, {
-        center: [19.27, 84.88], // Gopalpur & Coastal Ganjam
-        zoom: 11,
+        center: [18.5, 85.8], // Centered on Bay of Bengal approaching Odisha/Andhra coast
+        zoom: 8,
+        minZoom: 6,
+        maxZoom: 16,
+        maxBounds: BAY_OF_BENGAL_BOUNDS,
+        maxBoundsViscosity: 1.0, // Hard stop at Bay of Bengal boundary
         zoomControl: false,
         attributionControl: false
       });
@@ -151,6 +158,20 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
       // Keep map alive across standard re-renders
     };
   }, []);
+
+  // Pan to selected region within Bay of Bengal
+  useEffect(() => {
+    if (!mapInstanceRef.current) return;
+    if (selectedRegion === 'bay-of-bengal-basin') {
+      mapInstanceRef.current.setView([18.0, 86.5], 7);
+    } else if (selectedRegion === 'paradip-port-estuary') {
+      mapInstanceRef.current.setView([20.26, 86.67], 10);
+    } else if (selectedRegion === 'puri-konark-heritage') {
+      mapInstanceRef.current.setView([19.81, 85.83], 10);
+    } else {
+      mapInstanceRef.current.setView([19.27, 84.88], 10);
+    }
+  }, [selectedRegion]);
 
   // Update Tile Layer when viewMode changes
   useEffect(() => {
@@ -380,7 +401,7 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
   };
 
   const handleReset = () => {
-    mapInstanceRef.current?.setView([19.27, 84.88], 11);
+    mapInstanceRef.current?.setView([18.5, 85.8], 8);
   };
 
   return (
@@ -421,7 +442,18 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
           color: '#0f172a'
         }}>
           <span className="pulsing-beacon" style={{ width: '6px', height: '6px' }} />
-          <span>REALTIME GEOSPATIAL MAP // ODISHA SECTOR</span>
+          <span>BAY OF BENGAL BASIN // LIVE SAFETY MAP</span>
+          <span style={{
+            fontSize: '9px',
+            background: '#e0f2fe',
+            color: '#0369a1',
+            padding: '2px 6px',
+            borderRadius: '4px',
+            fontWeight: 800,
+            letterSpacing: '0.04em'
+          }}>
+            BAY OF BENGAL ONLY
+          </span>
         </div>
 
         <div style={{ width: '1px', height: '16px', background: '#cbd5e1' }} />

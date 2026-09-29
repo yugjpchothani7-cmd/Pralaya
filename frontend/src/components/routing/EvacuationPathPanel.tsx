@@ -26,15 +26,15 @@ export const EvacuationPathPanel: React.FC = () => {
   }, []);
 
   return (
-    <div className="glass-panel" style={{ padding: '24px' }}>
+    <div className="glass-panel" style={{ padding: '24px', background: '#ffffff', border: '1px solid #e2e8f0' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
         <div>
-          <h2 style={{ fontSize: '18px', fontWeight: 800, color: '#fff', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <h2 style={{ fontSize: '18px', fontWeight: 800, color: '#0f172a', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Navigation size={22} color="var(--accent-cyan)" />
-            Disaster-Aware Evacuation Route Navigator
+            Safe Evacuation Route Guidance
           </h2>
-          <p style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
-            Dynamic shortest-safe-path algorithm penalizing flooded road segments and downed infrastructure.
+          <p style={{ fontSize: '13px', color: '#475569' }}>
+            Shortest flood-safe pathway directing traffic away from submerged coastal roads.
           </p>
         </div>
 
@@ -44,9 +44,10 @@ export const EvacuationPathPanel: React.FC = () => {
             fontFamily: 'var(--font-mono)',
             padding: '4px 10px',
             borderRadius: '6px',
-            background: 'rgba(56, 189, 248, 0.1)',
-            color: 'var(--accent-cyan)',
-            border: '1px solid rgba(56, 189, 248, 0.3)'
+            background: '#ecfdf5',
+            color: '#059669',
+            border: '1px solid #a7f3d0',
+            fontWeight: 700
           }}>
             Status: {route.status}
           </span>
@@ -66,7 +67,7 @@ export const EvacuationPathPanel: React.FC = () => {
           borderRadius: '8px',
           background: 'rgba(244, 63, 94, 0.1)',
           border: '1px solid rgba(244, 63, 94, 0.3)',
-          color: 'var(--accent-rose)',
+          color: '#e11d48',
           fontSize: '13px',
           display: 'flex',
           alignItems: 'center',
@@ -86,33 +87,33 @@ export const EvacuationPathPanel: React.FC = () => {
             gap: '12px',
             padding: '16px',
             borderRadius: '10px',
-            background: 'rgba(56, 189, 248, 0.05)',
-            border: '1px solid rgba(56, 189, 248, 0.2)'
+            background: '#f0f9ff',
+            border: '1px solid #bae6fd'
           }}>
             <div>
-              <div style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Total Distance</div>
-              <div style={{ fontSize: '18px', fontWeight: 800, color: '#fff' }}>{route.metrics.total_distance_km} km</div>
+              <div style={{ fontSize: '11px', color: '#64748b', textTransform: 'uppercase', fontWeight: 600 }}>Total Distance</div>
+              <div style={{ fontSize: '18px', fontWeight: 800, color: '#0f172a' }}>{route.metrics.total_distance_km} km</div>
             </div>
 
             <div>
-              <div style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Estimated Transit</div>
-              <div style={{ fontSize: '18px', fontWeight: 800, color: 'var(--accent-cyan)' }}>{route.metrics.estimated_travel_time_minutes} mins</div>
+              <div style={{ fontSize: '11px', color: '#64748b', textTransform: 'uppercase', fontWeight: 600 }}>Estimated Transit</div>
+              <div style={{ fontSize: '18px', fontWeight: 800, color: '#0284c7' }}>{route.metrics.estimated_travel_time_minutes} mins</div>
             </div>
 
             <div>
-              <div style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Max Water On Route</div>
-              <div style={{ fontSize: '18px', fontWeight: 800, color: 'var(--accent-emerald)' }}>{route.metrics.max_flood_depth_on_path_m} m (Puddle)</div>
+              <div style={{ fontSize: '11px', color: '#64748b', textTransform: 'uppercase', fontWeight: 600 }}>Max Water On Route</div>
+              <div style={{ fontSize: '18px', fontWeight: 800, color: '#059669' }}>{route.metrics.max_flood_depth_on_path_m} m (Dry)</div>
             </div>
 
             <div>
-              <div style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Safe Corridor Window</div>
-              <div style={{ fontSize: '18px', fontWeight: 800, color: 'var(--accent-amber)' }}>{route.metrics.safe_clearance_window_hours} Hours Remaining</div>
+              <div style={{ fontSize: '11px', color: '#64748b', textTransform: 'uppercase', fontWeight: 600 }}>Safe Clearance Window</div>
+              <div style={{ fontSize: '18px', fontWeight: 800, color: '#d97706' }}>{route.metrics.safe_clearance_window_hours} Hours Left</div>
             </div>
           </div>
 
           {/* Turn-by-turn list */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            <div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+            <div style={{ fontSize: '13px', fontWeight: 700, color: '#0f172a', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
               Turn-by-Turn Dynamic Navigation Guidance
             </div>
 
@@ -122,19 +123,20 @@ export const EvacuationPathPanel: React.FC = () => {
                 style={{
                   padding: '14px 18px',
                   borderRadius: '8px',
-                  background: 'rgba(255, 255, 255, 0.03)',
-                  border: '1px solid var(--border-subtle)',
+                  background: '#f8fafc',
+                  border: '1px solid #e2e8f0',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '14px'
+                  gap: '14px',
+                  boxShadow: '0 1px 2px rgba(0,0,0,0.02)'
                 }}
               >
                 <div style={{
                   width: '28px',
                   height: '28px',
                   borderRadius: '50%',
-                  background: 'rgba(56, 189, 248, 0.15)',
-                  color: 'var(--accent-cyan)',
+                  background: '#e0f2fe',
+                  color: '#0284c7',
                   fontWeight: 700,
                   fontSize: '13px',
                   display: 'flex',
@@ -146,15 +148,15 @@ export const EvacuationPathPanel: React.FC = () => {
                 </div>
 
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: '14px', fontWeight: 600, color: '#fff' }}>
+                  <div style={{ fontSize: '14px', fontWeight: 700, color: '#0f172a' }}>
                     {step.instruction}
                   </div>
-                  <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
+                  <div style={{ fontSize: '12px', color: '#64748b' }}>
                     Segment: {step.distance_m}m | Water Depth: {step.flood_depth_m}m
                   </div>
                 </div>
 
-                <ArrowRight size={16} color="var(--text-muted)" />
+                <ArrowRight size={16} color="#94a3b8" />
               </div>
             ))}
           </div>

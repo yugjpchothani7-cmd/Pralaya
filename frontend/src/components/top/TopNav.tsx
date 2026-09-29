@@ -163,7 +163,7 @@ export const TopNav: React.FC<TopNavProps> = ({
             letterSpacing: '0.01em',
             margin: 0
           }}>
-            Predictive Resilience & Adaptive Local Action AI // Coastal Odisha Sector
+            Bay of Bengal Coastal Cyclone & Flood Safety System • Real-Time Shelter & Evacuation Guide
           </p>
         </div>
       </div>
@@ -348,10 +348,10 @@ export const TopNav: React.FC<TopNavProps> = ({
               fontSize: '11px',
               fontWeight: 700
             }}
-            title="Inspect Verification Guardrails & PostGIS Posture"
+            title="Inspect System Health & Services Status"
           >
             <ShieldCheck size={14} />
-            <span>VERIFIED L1</span>
+            <span>SYSTEM HEALTH</span>
           </button>
         )}
         {onOpenJudge && (
@@ -370,7 +370,7 @@ export const TopNav: React.FC<TopNavProps> = ({
               fontSize: '11px',
               fontWeight: 700
             }}
-            title="Open Judge Mode"
+            title="Open Judge & Architecture Overview"
           >
             <Zap size={14} />
             <span>JUDGE MODE</span>
@@ -392,10 +392,10 @@ export const TopNav: React.FC<TopNavProps> = ({
               fontSize: '11px',
               fontWeight: 700
             }}
-            title="Start Presentation Mode"
+            title="Start Step-by-Step Walkthrough"
           >
             <Zap size={14} />
-            <span>PRESENTATION</span>
+            <span>WALKTHROUGH</span>
           </button>
         )}
       </div>

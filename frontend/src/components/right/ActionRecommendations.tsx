@@ -31,117 +31,121 @@ export const ActionRecommendations: React.FC<ActionRecommendationsProps> = ({ ac
   const getPriorityBadge = (priority: 'URGENT' | 'HIGH' | 'MEDIUM') => {
     if (priority === 'URGENT') {
       return {
-        bg: 'rgba(244, 63, 94, 0.2)',
-        color: 'var(--accent-rose)',
-        border: 'rgba(244, 63, 94, 0.4)'
+        bg: '#fee2e2',
+        color: '#dc2626',
+        border: '#fca5a5'
       };
     }
     if (priority === 'HIGH') {
       return {
-        bg: 'rgba(245, 158, 11, 0.2)',
-        color: 'var(--accent-amber)',
-        border: 'rgba(245, 158, 11, 0.4)'
+        bg: '#fef3c7',
+        color: '#b45309',
+        border: '#fde68a'
       };
     }
     return {
-      bg: 'rgba(56, 189, 248, 0.2)',
-      color: 'var(--accent-cyan)',
-      border: 'rgba(56, 189, 248, 0.4)'
+      bg: '#e0f2fe',
+      color: '#0284c7',
+      border: '#bae6fd'
     };
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', height: '100%', overflowY: 'auto' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', height: '100%', overflowY: 'auto', paddingRight: '2px' }}>
       {/* Header Banner */}
       <div style={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: '10px 12px',
-        background: 'rgba(15, 23, 42, 0.8)',
-        borderRadius: '8px',
-        border: '1px solid var(--border-subtle)'
+        padding: '12px 14px',
+        background: '#ffffff',
+        borderRadius: '10px',
+        border: '1px solid #e2e8f0',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.04)'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <ShieldAlert size={15} color="var(--accent-rose)" />
-          <span style={{ fontSize: '12px', fontWeight: 800, color: '#fff', letterSpacing: '0.04em' }}>
-            PRIORITIZED ACTION DIRECTIVES
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <ShieldAlert size={17} color="#e11d48" />
+          <span style={{ fontSize: '13px', fontWeight: 800, color: '#0f172a', letterSpacing: '-0.01em' }}>
+            RESCUE & RELIEF ORDERS
           </span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
           <span style={{
-            fontSize: '9.5px',
+            fontSize: '10px',
             fontFamily: 'var(--font-mono)',
             padding: '2px 6px',
             borderRadius: '4px',
-            background: 'rgba(56, 189, 248, 0.15)',
-            color: 'var(--accent-cyan)',
-            fontWeight: 700
+            background: '#eff6ff',
+            color: '#2563eb',
+            fontWeight: 700,
+            border: '1px solid #bfdbfe'
           }}>
             LANG: {activeLang}
           </span>
           <span style={{
-            fontSize: '9.5px',
+            fontSize: '10px',
             fontFamily: 'var(--font-mono)',
             padding: '2px 6px',
             borderRadius: '4px',
-            background: 'rgba(244, 63, 94, 0.2)',
-            color: 'var(--accent-rose)',
-            fontWeight: 700
+            background: '#fee2e2',
+            color: '#dc2626',
+            fontWeight: 700,
+            border: '1px solid #fca5a5'
           }}>
-            4 ORDERS ACTIVE
+            4 ACTIVE ORDERS
           </span>
         </div>
       </div>
 
       {/* Action Order Cards */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
         {recommendations.map((rec) => {
           const badge = getPriorityBadge(rec.priority);
           return (
             <div
               key={rec.id}
               style={{
-                background: 'rgba(15, 23, 42, 0.75)',
-                border: rec.status === 'PENDING' ? '1px solid rgba(244, 63, 94, 0.4)' : '1px solid var(--border-subtle)',
-                borderRadius: '8px',
-                padding: '12px 14px',
+                background: '#ffffff',
+                border: rec.status === 'PENDING' ? '1.5px solid #fecdd3' : '1px solid #e2e8f0',
+                borderRadius: '10px',
+                padding: '14px 16px',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '8px'
+                gap: '8px',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.04)'
               }}
             >
               {/* Card Header */}
               <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                   <span style={{
-                    fontSize: '9px',
+                    fontSize: '9.5px',
                     fontWeight: 800,
-                    padding: '2px 6px',
-                    borderRadius: '3px',
+                    padding: '2px 7px',
+                    borderRadius: '4px',
                     background: badge.bg,
                     color: badge.color,
                     border: `1px solid ${badge.border}`
                   }}>
                     {rec.priority}
                   </span>
-                  <span style={{ fontSize: '10px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+                  <span style={{ fontSize: '11px', color: '#64748b', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>
                     {rec.targetMandal}
                   </span>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--accent-amber)', fontSize: '10px', fontFamily: 'var(--font-mono)' }}>
-                  <Clock size={11} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#b45309', fontSize: '11px', fontFamily: 'var(--font-mono)', fontWeight: 700 }}>
+                  <Clock size={12} />
                   <span>ETA {rec.deadlineHours}h</span>
                 </div>
               </div>
 
               {/* Title & Action Description */}
               <div>
-                <h5 style={{ fontSize: '12px', fontWeight: 800, color: '#fff', marginBottom: '3px', lineHeight: 1.3 }}>
+                <h5 style={{ fontSize: '13px', fontWeight: 800, color: '#0f172a', marginBottom: '4px', lineHeight: 1.3 }}>
                   {rec.title}
                 </h5>
-                <p style={{ fontSize: '10.5px', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.4 }}>
+                <p style={{ fontSize: '11.5px', color: '#475569', margin: 0, lineHeight: 1.45 }}>
                   {rec.actionText}
                 </p>
               </div>
@@ -151,10 +155,10 @@ export const ActionRecommendations: React.FC<ActionRecommendationsProps> = ({ ac
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                paddingTop: '6px',
-                borderTop: '1px solid rgba(255, 255, 255, 0.05)'
+                paddingTop: '8px',
+                borderTop: '1px solid #f1f5f9'
               }}>
-                <span style={{ fontSize: '9.5px', color: 'var(--accent-cyan)', fontWeight: 600 }}>
+                <span style={{ fontSize: '11px', color: '#0284c7', fontWeight: 700 }}>
                   Impact: {rec.impactMetric}
                 </span>
 
@@ -162,40 +166,41 @@ export const ActionRecommendations: React.FC<ActionRecommendationsProps> = ({ ac
                   onClick={() => toggleDispatchStatus(rec.id)}
                   style={{
                     background: rec.status === 'COMPLETED'
-                      ? 'rgba(16, 185, 129, 0.2)'
+                      ? '#ecfdf5'
                       : rec.status === 'DISPATCHED'
-                      ? 'rgba(56, 189, 248, 0.2)'
-                      : 'linear-gradient(135deg, var(--accent-rose), #be123c)',
+                      ? '#eff6ff'
+                      : 'linear-gradient(135deg, #e11d48, #be123c)',
                     border: rec.status === 'COMPLETED'
-                      ? '1px solid var(--accent-emerald)'
+                      ? '1px solid #a7f3d0'
                       : rec.status === 'DISPATCHED'
-                      ? '1px solid var(--accent-cyan)'
+                      ? '1px solid #bfdbfe'
                       : 'none',
-                    color: '#fff',
-                    borderRadius: '4px',
-                    padding: '4px 10px',
-                    fontSize: '10px',
+                    color: rec.status === 'COMPLETED' ? '#059669' : rec.status === 'DISPATCHED' ? '#2563eb' : '#ffffff',
+                    borderRadius: '6px',
+                    padding: '5px 12px',
+                    fontSize: '11px',
                     fontWeight: 700,
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '4px'
+                    gap: '5px',
+                    boxShadow: rec.status === 'PENDING' ? '0 2px 4px rgba(225,29,72,0.2)' : 'none'
                   }}
                 >
                   {rec.status === 'COMPLETED' ? (
                     <>
-                      <CheckCircle2 size={11} color="var(--accent-emerald)" />
-                      <span style={{ color: 'var(--accent-emerald)' }}>VERIFIED</span>
+                      <CheckCircle2 size={12} color="#059669" />
+                      <span>COMPLETED</span>
                     </>
                   ) : rec.status === 'DISPATCHED' ? (
                     <>
-                      <FileCheck size={11} color="var(--accent-cyan)" />
-                      <span style={{ color: 'var(--accent-cyan)' }}>IN TRANSIT</span>
+                      <FileCheck size={12} color="#2563eb" />
+                      <span>IN TRANSIT</span>
                     </>
                   ) : (
                     <>
-                      <Send size={11} />
-                      <span>DISPATCH ORDER</span>
+                      <Send size={12} />
+                      <span>DISPATCH NOW</span>
                     </>
                   )}
                 </button>

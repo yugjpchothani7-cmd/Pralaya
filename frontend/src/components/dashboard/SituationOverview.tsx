@@ -46,10 +46,10 @@ export const SituationOverview: React.FC<SituationOverviewProps> = ({ situation,
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <AlertCircle size={22} color="var(--accent-rose)" />
           <div>
-            <div style={{ fontSize: '15px', fontWeight: 700, color: '#fff' }}>
+            <div style={{ fontSize: '15px', fontWeight: 800, color: '#0f172a' }}>
               {situation.name} — {situation.category}
             </div>
-            <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+            <div style={{ fontSize: '12px', color: '#475569' }}>
               Eye Location: {current_status.center_lat.toFixed(2)}°N, {current_status.center_lon.toFixed(2)}°E | Heading {current_status.bearing_deg}° NW at {current_status.movement_speed_kmh} km/h
             </div>
           </div>
@@ -127,13 +127,13 @@ export const SituationOverview: React.FC<SituationOverviewProps> = ({ situation,
       </div>
 
       {/* Provenance Box */}
-      <div className="glass-panel" style={{ padding: '16px 20px', background: 'rgba(15, 23, 42, 0.45)' }}>
+      <div className="glass-panel" style={{ padding: '16px 20px', background: '#f8fafc', border: '1px solid #e2e8f0' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', fontWeight: 600, color: '#334155' }}>
             <CheckCircle2 size={16} color="var(--accent-emerald)" />
-            <span>Telemetry Provenance: <strong style={{ color: '#fff' }}>{provenance.source_id}</strong></span>
+            <span>Telemetry Provenance: <strong style={{ color: '#0f172a' }}>{provenance.source_id}</strong></span>
           </div>
-          <span style={{ fontSize: '12px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+          <span style={{ fontSize: '12px', color: '#64748b', fontFamily: 'var(--font-mono)' }}>
             Authority: {provenance.source_authority} | Confidence: {(((provenance.confidence_score ?? 1)) * 100).toFixed(0)}%
           </span>
         </div>

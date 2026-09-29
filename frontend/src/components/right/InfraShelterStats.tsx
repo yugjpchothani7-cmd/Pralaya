@@ -3,7 +3,10 @@ import {
   ShieldCheck, 
   Fuel, 
   ArrowRight, 
-  Zap
+  Zap,
+  Building2,
+  CheckCircle,
+  AlertOctagon
 } from 'lucide-react';
 import { DEMO_SHELTERS } from '../../data/demoData';
 
@@ -18,31 +21,170 @@ export const InfraShelterStats: React.FC<InfraShelterStatsProps> = ({ gridBlacko
   const occupancyPercent = ((totalShelterOccupancy / totalShelterCapacity) * 100).toFixed(0);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', height: '100%', overflowY: 'auto' }}>
-      {/* Infrastructure Failure Cascade Tracker */}
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', height: '100%', overflowY: 'auto', paddingRight: '2px' }}>
+      
+      {/* 1. Shelter Network Occupancy & Capacity */}
       <div style={{
-        padding: '12px 14px',
-        background: 'rgba(15, 23, 42, 0.75)',
-        border: '1px solid var(--border-subtle)',
-        borderRadius: '8px'
+        padding: '14px 16px',
+        background: '#ffffff',
+        border: '1px solid #e2e8f0',
+        borderRadius: '10px',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.04)'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <Zap size={15} color="var(--accent-amber)" />
-            <span style={{ fontSize: '11px', fontWeight: 800, color: '#fff', letterSpacing: '0.04em' }}>
-              FAILURE CASCADE PROPAGATION (DAG)
-            </span>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Building2 size={18} color="#059669" />
+            <div>
+              <h4 style={{ fontSize: '13px', fontWeight: 800, color: '#0f172a', margin: 0, letterSpacing: '-0.01em' }}>
+                RESCUE SHELTER AVAILABILITY
+              </h4>
+              <span style={{ fontSize: '11px', color: '#64748b' }}>Live Bay of Bengal Cyclone Havens</span>
+            </div>
           </div>
           <span style={{
-            fontSize: '9.5px',
+            fontSize: '11px',
+            color: '#059669',
             fontFamily: 'var(--font-mono)',
-            padding: '2px 5px',
-            borderRadius: '3px',
-            background: 'rgba(244, 63, 94, 0.2)',
-            color: 'var(--accent-rose)',
-            fontWeight: 700
+            fontWeight: 700,
+            background: '#ecfdf5',
+            padding: '3px 8px',
+            borderRadius: '6px',
+            border: '1px solid #a7f3d0'
           }}>
-            {gridBlackout ? 'TOTAL BLACKOUT' : 'CASCADE ACTIVE'}
+            5 SITES OPEN
+          </span>
+        </div>
+
+        {/* Global Capacity Meter */}
+        <div style={{ marginBottom: '14px', background: '#f8fafc', padding: '10px 12px', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', marginBottom: '6px' }}>
+            <span style={{ color: '#475569', fontWeight: 600 }}>Total Shelter Space Taken:</span>
+            <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#0f172a' }}>
+              {totalShelterOccupancy.toLocaleString()} / {totalShelterCapacity.toLocaleString()} ({occupancyPercent}% filled)
+            </span>
+          </div>
+          <div style={{ width: '100%', height: '8px', background: '#e2e8f0', borderRadius: '4px', overflow: 'hidden' }}>
+            <div style={{
+              width: `${occupancyPercent}%`,
+              height: '100%',
+              background: 'linear-gradient(90deg, #10b981 0%, #059669 70%, #d97706 100%)',
+              borderRadius: '4px',
+              transition: 'width 0.4s ease'
+            }} />
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#64748b', marginTop: '6px', fontWeight: 500 }}>
+            <span>Available Beds: <strong style={{ color: '#059669' }}>{remainingCapacity.toLocaleString()} open spots</strong></span>
+            <span>Food & Water: Stocked</span>
+          </div>
+        </div>
+
+        {/* Shelter List */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          {DEMO_SHELTERS.map((s) => {
+            const isAtRisk = s.roadStatus === 'IMPASSABLE' || s.clearanceMarginM <= 0;
+            const occupancyRatio = (s.currentOccupancy / s.certifiedCapacity) * 100;
+            const isRecommended = s.topsisScore > 0.85 && !isAtRisk;
+
+            return (
+              <div
+                key={s.id}
+                style={{
+                  background: isRecommended ? '#f0fdf4' : isAtRisk ? '#fff1f2' : '#ffffff',
+                  border: isRecommended ? '1.5px solid #86efac' : isAtRisk ? '1.5px solid #fecdd3' : '1px solid #e2e8f0',
+                  borderRadius: '8px',
+                  padding: '10px 12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: '10px',
+                  boxShadow: '0 1px 2px rgba(0,0,0,0.03)'
+                }}
+              >
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '2px' }}>
+                    <span style={{ fontSize: '12px', fontWeight: 800, color: '#0f172a' }}>{s.name}</span>
+                    {isRecommended && (
+                      <span style={{
+                        fontSize: '9px',
+                        padding: '1px 6px',
+                        borderRadius: '4px',
+                        background: '#10b981',
+                        color: '#ffffff',
+                        fontWeight: 800
+                      }}>
+                        TOP PICK
+                      </span>
+                    )}
+                    <span style={{
+                      fontSize: '9px',
+                      padding: '1px 5px',
+                      borderRadius: '4px',
+                      background: isAtRisk ? '#ffe4e6' : '#dcfce7',
+                      color: isAtRisk ? '#e11d48' : '#15803d',
+                      fontWeight: 700
+                    }}>
+                      Safety: {(s.topsisScore * 100).toFixed(0)}%
+                    </span>
+                  </div>
+                  <div style={{ fontSize: '11px', color: '#475569', display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                    <span>Elevation: <b>+{s.plinthElevationM}m</b></span>
+                    <span>Flood Clearance: <b style={{ color: s.clearanceMarginM > 0 ? '#059669' : '#e11d48' }}>+{s.clearanceMarginM}m dry</b></span>
+                  </div>
+                </div>
+
+                <div style={{ textAlign: 'right', minWidth: '95px' }}>
+                  <div style={{ fontSize: '12px', fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#0f172a' }}>
+                    {s.currentOccupancy} / {s.certifiedCapacity}
+                  </div>
+                  <div style={{
+                    fontSize: '10px',
+                    fontWeight: 700,
+                    marginTop: '2px',
+                    color: s.roadStatus === 'CLEAR' ? '#15803d' : s.roadStatus === 'CAUTION' ? '#b45309' : '#e11d48',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'flex-end',
+                    gap: '3px'
+                  }}>
+                    {s.roadStatus === 'CLEAR' ? <CheckCircle size={10} /> : <AlertOctagon size={10} />}
+                    <span>{s.roadStatus === 'CLEAR' ? 'Road Open' : s.roadStatus === 'CAUTION' ? 'Water on Road' : 'Road Flooded'}</span>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* 2. Critical Lifeline & Power Infrastructure */}
+      <div style={{
+        padding: '14px 16px',
+        background: '#ffffff',
+        border: '1px solid #e2e8f0',
+        borderRadius: '10px',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.04)'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Zap size={17} color="#d97706" />
+            <div>
+              <h4 style={{ fontSize: '13px', fontWeight: 800, color: '#0f172a', margin: 0 }}>
+                POWER & HOSPITAL LIFELINES
+              </h4>
+              <span style={{ fontSize: '11px', color: '#64748b' }}>Flood Damage Cascade Chain</span>
+            </div>
+          </div>
+          <span style={{
+            fontSize: '10px',
+            fontFamily: 'var(--font-mono)',
+            padding: '3px 7px',
+            borderRadius: '5px',
+            background: gridBlackout ? '#fee2e2' : '#fef3c7',
+            color: gridBlackout ? '#dc2626' : '#b45309',
+            fontWeight: 700,
+            border: `1px solid ${gridBlackout ? '#fca5a5' : '#fde68a'}`
+          }}>
+            {gridBlackout ? 'TOTAL BLACKOUT' : 'GRID THREATENED'}
           </span>
         </div>
 
@@ -51,153 +193,59 @@ export const InfraShelterStats: React.FC<InfraShelterStatsProps> = ({ gridBlacko
           display: 'flex',
           flexDirection: 'column',
           gap: '8px',
-          background: 'rgba(10, 16, 30, 0.6)',
-          padding: '10px',
-          borderRadius: '6px',
-          border: '1px solid var(--border-subtle)'
+          background: '#f8fafc',
+          padding: '12px',
+          borderRadius: '8px',
+          border: '1px solid #e2e8f0'
         }}>
           {/* Node 1: Substation */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--accent-rose)' }} />
-              <span style={{ fontSize: '11px', fontWeight: 700, color: '#fff' }}>Chhatrapur 132kV Substation</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ width: '9px', height: '9px', borderRadius: '50%', background: '#e11d48' }} />
+              <span style={{ fontSize: '12px', fontWeight: 700, color: '#0f172a' }}>Chhatrapur 132kV Substation</span>
             </div>
-            <span style={{ fontSize: '10px', color: 'var(--accent-rose)', fontFamily: 'var(--font-mono)', fontWeight: 700 }}>
-              SUBMERGED (0.65m)
+            <span style={{ fontSize: '11px', color: '#e11d48', fontFamily: 'var(--font-mono)', fontWeight: 800 }}>
+              FLOODED (0.65m deep)
             </span>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', paddingLeft: '12px', color: 'var(--text-muted)' }}>
-            <ArrowRight size={12} />
-            <span style={{ fontSize: '9.5px', color: 'var(--accent-rose)' }}>Tripped 11kV lines ──&gt; Grid severed</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', paddingLeft: '17px', color: '#64748b' }}>
+            <ArrowRight size={12} color="#e11d48" />
+            <span style={{ fontSize: '11px', color: '#b91c1c', fontWeight: 600 }}>11kV feeder lines tripped ──&gt; Coastal power cut</span>
           </div>
 
           {/* Node 2: District Hospital */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--accent-amber)' }} />
-              <span style={{ fontSize: '11px', fontWeight: 700, color: '#fff' }}>Ganjam District Hospital</span>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '4px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ width: '9px', height: '9px', borderRadius: '50%', background: '#d97706' }} />
+              <span style={{ fontSize: '12px', fontWeight: 700, color: '#0f172a' }}>Ganjam District Hospital</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-              <Fuel size={12} color="var(--accent-amber)" />
-              <span style={{ fontSize: '10px', color: 'var(--accent-amber)', fontFamily: 'var(--font-mono)', fontWeight: 700 }}>
+              <Fuel size={12} color="#d97706" />
+              <span style={{ fontSize: '11px', color: '#b45309', fontFamily: 'var(--font-mono)', fontWeight: 800 }}>
                 7.2h DIESEL LEFT
               </span>
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', paddingLeft: '12px', color: 'var(--text-muted)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', paddingLeft: '17px', color: '#64748b' }}>
             <ArrowRight size={12} />
-            <span style={{ fontSize: '9.5px', color: 'var(--text-secondary)' }}>Water pumps lost upstream power</span>
+            <span style={{ fontSize: '11px', color: '#475569' }}>Running on emergency generators for ICU & surgical wards</span>
           </div>
 
           {/* Node 3: Water Booster */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--accent-amber)' }} />
-              <span style={{ fontSize: '11px', fontWeight: 700, color: '#fff' }}>North Drinking Water Booster</span>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '4px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ width: '9px', height: '9px', borderRadius: '50%', background: '#f59e0b' }} />
+              <span style={{ fontSize: '12px', fontWeight: 700, color: '#0f172a' }}>North Drinking Water Booster</span>
             </div>
-            <span style={{ fontSize: '10px', color: 'var(--accent-amber)', fontFamily: 'var(--font-mono)', fontWeight: 700 }}>
-              OFFLINE (14h reserve)
+            <span style={{ fontSize: '11px', color: '#b45309', fontFamily: 'var(--font-mono)', fontWeight: 800 }}>
+              OFFLINE (14h reserve remaining)
             </span>
           </div>
         </div>
       </div>
 
-      {/* Shelter Network Statistics */}
-      <div style={{
-        padding: '12px 14px',
-        background: 'rgba(15, 23, 42, 0.75)',
-        border: '1px solid var(--border-subtle)',
-        borderRadius: '8px'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <ShieldCheck size={15} color="var(--accent-emerald)" />
-            <span style={{ fontSize: '11px', fontWeight: 800, color: '#fff', letterSpacing: '0.04em' }}>
-              SHELTER NETWORK OCCUPANCY
-            </span>
-          </div>
-          <span style={{ fontSize: '10px', color: 'var(--accent-emerald)', fontFamily: 'var(--font-mono)' }}>
-            5 SITES CERTIFIED
-          </span>
-        </div>
-
-        {/* Global Capacity Meter */}
-        <div style={{ marginBottom: '10px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', marginBottom: '4px' }}>
-            <span style={{ color: 'var(--text-secondary)' }}>Total System Utilization:</span>
-            <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#fff' }}>
-              {totalShelterOccupancy.toLocaleString()} / {totalShelterCapacity.toLocaleString()} ({occupancyPercent}%)
-            </span>
-          </div>
-          <div style={{ width: '100%', height: '7px', background: 'rgba(255, 255, 255, 0.08)', borderRadius: '4px', overflow: 'hidden' }}>
-            <div style={{
-              width: `${occupancyPercent}%`,
-              height: '100%',
-              background: 'linear-gradient(90deg, #10b981, #f59e0b)',
-              borderRadius: '4px'
-            }} />
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '9.5px', color: 'var(--text-muted)', marginTop: '3px' }}>
-            <span>Available Capacity: {remainingCapacity.toLocaleString()}</span>
-            <span>Surge Headroom: Active</span>
-          </div>
-        </div>
-
-        {/* Shelter List with TOPSIS Scores */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-          {DEMO_SHELTERS.map((s) => {
-            const isAtRisk = s.roadStatus === 'IMPASSABLE' || s.clearanceMarginM <= 0;
-            return (
-              <div
-                key={s.id}
-                style={{
-                  background: isAtRisk ? 'rgba(244, 63, 94, 0.1)' : 'rgba(10, 16, 30, 0.6)',
-                  border: isAtRisk ? '1px solid rgba(244, 63, 94, 0.3)' : '1px solid var(--border-subtle)',
-                  borderRadius: '6px',
-                  padding: '6px 10px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between'
-                }}
-              >
-                <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <span style={{ fontSize: '11px', fontWeight: 700, color: '#fff' }}>{s.name}</span>
-                    <span style={{
-                      fontSize: '8.5px',
-                      padding: '1px 4px',
-                      borderRadius: '3px',
-                      background: isAtRisk ? 'rgba(244, 63, 94, 0.25)' : 'rgba(16, 185, 129, 0.2)',
-                      color: isAtRisk ? 'var(--accent-rose)' : 'var(--accent-emerald)',
-                      fontWeight: 800
-                    }}>
-                      TOPSIS {(s.topsisScore * 100).toFixed(0)}%
-                    </span>
-                  </div>
-                  <span style={{ fontSize: '9.5px', color: 'var(--text-muted)' }}>
-                    Plinth: +{s.plinthElevationM}m MSL | Margin: +{s.clearanceMarginM}m
-                  </span>
-                </div>
-
-                <div style={{ textAlign: 'right' }}>
-                  <div style={{ fontSize: '10px', fontFamily: 'var(--font-mono)', fontWeight: 700, color: '#fff' }}>
-                    {s.currentOccupancy}/{s.certifiedCapacity}
-                  </div>
-                  <span style={{
-                    fontSize: '9px',
-                    fontWeight: 700,
-                    color: s.roadStatus === 'CLEAR' ? 'var(--accent-emerald)' : s.roadStatus === 'CAUTION' ? 'var(--accent-amber)' : 'var(--accent-rose)'
-                  }}>
-                    {s.roadStatus}
-                  </span>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
     </div>
   );
 };
